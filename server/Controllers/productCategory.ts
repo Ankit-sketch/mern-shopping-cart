@@ -1,3 +1,4 @@
+
 import { Request, Response, NextFunction } from 'express';
 
 import Joi, { any } from 'joi';
@@ -6,9 +7,9 @@ import customErrorHandler from '../Services/customErrorHandler';
 
 import fs from 'fs';
 
-import { Product } from '../Models'
+import { ProductCategory, Product } from '../Models'
 
-const productController = {
+const productCategory = {
     productUpload: async (req: Request, res: Response, next: NextFunction) => {
         const data: any = req.body;
 
@@ -18,15 +19,14 @@ const productController = {
                     .min(3)
                     .max(30)
                     .required(),
-                price: Joi.number()
+                    category_name: Joi.string()
                     .required(),
-                description: Joi.string()
-                    .min(3)
-                    .max(30)
-                    .required(),
-                    product_category: Joi.string()
-                    .required()
-                // product_category: Joi.string()
+                                   
+                // description: Joi.string()
+                //     .min(3)
+                //     .max(30)
+                //     .required(),
+                // category: Joi.string()
                 //     .min(3)
                 //     .max(30)
                 //     .required(),
@@ -48,7 +48,7 @@ const productController = {
                 images: req.files
             }
             console.log(data2)
-            const document = Product.create({
+            const document = ProductCategory.create({
                 ...data2,
             }, function (err, doc) {
                 if (err) {
@@ -59,7 +59,26 @@ const productController = {
         } catch (error) {
             return next(error)
         }
+    },
+    productDownload: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const GetProduct:any = await ProductCategory.find({});
+            res.status(200).json({ GetProduct });
+        } catch (error) {
+            return next(error)
+        }
+    },
+    singleProduct: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {id} = req.params;
+            const result = await ProductCategory.findOne({
+                _id : id
+            }).populate('product');
+            res.json({result})
+        } catch (error) {
+            return next(error)
+        }
     }
 }
 
-export default productController;
+export default productCategory;

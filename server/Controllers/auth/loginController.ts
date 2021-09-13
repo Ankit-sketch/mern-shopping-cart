@@ -10,6 +10,11 @@ import customErrorHandler from '../../Services/customErrorHandler';
 
 import tokenService from '../../Services/tokenService'
 
+interface Itoken{
+    _id:string,
+    role: string
+}
+
 const loginController = {
     login: async (req: Request, res: Response, next: NextFunction) => {
         const data: any = req.body;
@@ -29,17 +34,17 @@ const loginController = {
             // Checking if user exists in database
             const user: any = await User.findOne({ email: data.email });
             if (!user) {
-                return next(customErrorHandler.wrongCredentials("email or password is wrong"));
+                return next(customErrorHandler.wrongCredentials("wrong credentials"));
             }
 
             // comparing passwords
             const match = await bcrypt.compare(data.password, user.password);
             if (!match) {
-                return next(customErrorHandler.wrongCredentials("email or password is wrong"));
+                return next(customErrorHandler.wrongCredentials("wrong credentials"));
             }
 
             // Generating Access Token
-            const access_token = tokenService.sign({ id: user.id, role: user.role })
+            const access_token = tokenService.sign({ _id: user._id, role: user.role })
 
             return res.status(200).json({ access_token });
         } catch (error) {

@@ -5,24 +5,19 @@ const productSchema = new mongoose.Schema({
         type: String,
     },
     price: {
-        type: Number,
-       
+        type: Number,     
     },
     description: {
-        type: String,
-     
-     
+        type: String, 
     },
-    product_category: {
-        type: String,
-    },
+    product_category: [{
+        type: mongoose.Types.ObjectId, ref : 'ProductCategory'
+    }],
     images: [{
         path: {
             type: String,
         },
-    }]
-        
-    
+    }] 
 }, {
     timestamps: true
 })
