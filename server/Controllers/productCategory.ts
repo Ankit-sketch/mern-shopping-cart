@@ -1,35 +1,17 @@
-
 import { Request, Response, NextFunction } from 'express';
 
-import Joi, { any } from 'joi';
+import Joi from 'joi';
 
-import customErrorHandler from '../Services/customErrorHandler';
-
-import fs from 'fs';
-
-import { ProductCategory, Product } from '../Models'
+import { ProductCategory } from '../Models'
 
 const productCategory = {
     productUpload: async (req: Request, res: Response, next: NextFunction) => {
         const data: any = req.body;
 
         try {
-            const productSchema = Joi.object({
-                title: Joi.string()
-                    .min(3)
-                    .max(30)
-                    .required(),
+            const productSchema = Joi.object({              
                     category_name: Joi.string()
                     .required(),
-                                   
-                // description: Joi.string()
-                //     .min(3)
-                //     .max(30)
-                //     .required(),
-                // category: Joi.string()
-                //     .min(3)
-                //     .max(30)
-                //     .required(),
             })
             const { error } = productSchema.validate(data);
             if (error) {

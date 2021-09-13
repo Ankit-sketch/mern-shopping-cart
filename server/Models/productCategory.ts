@@ -1,20 +1,16 @@
 import mongoose from 'mongoose';
 
 const productCategorySchema = new mongoose.Schema({
-    title: {
-        type: String,
-    },
    category_name: {
-        type: String,    
+        type: String, 
+        enum : ['mobile','electronics'],   
     },
-    product: {
+    product: [{
         type: mongoose.Schema.Types.ObjectId, ref : 'Product',
-    },
-    images: [{
-        path: {
+    }],
+    image: {
             type: String,
-        },
-    }]
+    },
 }, {
     timestamps: true
 })

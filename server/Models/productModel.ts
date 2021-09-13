@@ -10,9 +10,9 @@ const productSchema = new mongoose.Schema({
     description: {
         type: String, 
     },
-    product_category: [{
-        type: mongoose.Types.ObjectId, ref : 'ProductCategory'
-    }],
+    // product_category: [{
+    //     type: mongoose.Types.ObjectId, ref : 'ProductCategory'
+    // }],
     images: [{
         path: {
             type: String,
